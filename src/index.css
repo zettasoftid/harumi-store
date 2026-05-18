@@ -1,0 +1,151 @@
+@import '@fontsource/playfair-display/400.css';
+@import '@fontsource/playfair-display/400-italic.css';
+@import '@fontsource/playfair-display/700.css';
+@import '@fontsource/manrope/400.css';
+@import '@fontsource/manrope/700.css';
+@import '@fontsource/manrope/800.css';
+@import '@fontsource/caudex/400.css';
+@import '@fontsource/caudex/400-italic.css';
+@import '@fontsource/caudex/700.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 24 100% 97%;
+    --foreground: 0 0% 17%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 17%;
+    --primary: 345 44% 50%;
+    --primary-foreground: 24 100% 97%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 0 0% 17%;
+    --muted: 95 6% 48%;
+    --muted-foreground: 95 6% 48%;
+    --accent: 348 70% 79%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 95 6% 75%;
+    --input: 95 6% 75%;
+    --ring: 345 44% 50%;
+    --radius: 1rem;
+    
+    --soil: #2B2B2B;
+    --cream: #FFF8F2;
+    --clay: #EFA3B4;
+    --moss: #7A9B76;
+    --rose: #B94763;
+    --paper: #FFFFFF;
+  }
+
+  body {
+    @apply bg-cream text-soil;
+    font-family: 'Manrope', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer components {
+  .bg-cream {
+    background-color: var(--cream);
+  }
+  .bg-soil {
+    background-color: var(--soil);
+  }
+  .bg-clay {
+    background-color: var(--clay);
+  }
+  .bg-rose {
+    background-color: var(--rose);
+  }
+  .text-soil {
+    color: var(--soil);
+  }
+  .text-cream {
+    color: var(--cream);
+  }
+  .text-clay {
+    color: var(--clay);
+  }
+  .text-rose {
+    color: var(--rose);
+  }
+  .text-moss {
+    color: var(--moss);
+  }
+  .border-soil {
+    border-color: var(--soil);
+  }
+  .border-clay {
+    border-color: var(--clay);
+  }
+  .border-rose {
+    border-color: var(--rose);
+  }
+
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+  .font-caudex {
+    font-family: 'Caudex', serif;
+  }
+  .font-body {
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .btn-pill {
+    @apply inline-flex items-center justify-center px-8 py-3 rounded-full font-body font-bold text-xs uppercase tracking-widest transition-all duration-300;
+  }
+  .btn-pill-dark {
+    @apply btn-pill bg-rose text-cream hover:opacity-90;
+  }
+  .btn-pill-outline {
+    @apply btn-pill border-2 border-rose text-rose hover:bg-rose hover:text-cream;
+  }
+  .btn-pill-clay {
+    @apply btn-pill bg-clay text-soil hover:opacity-90;
+  }
+
+  .section-padding {
+    @apply px-6 sm:px-8 lg:px-16 xl:px-24;
+  }
+
+  .product-card {
+    @apply bg-white rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+  }
+}
+
+@layer utilities {
+  .marquee-track {
+    animation: marquee 20s linear infinite;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  
+  .scroll-hidden::-webkit-scrollbar {
+    display: none;
+  }
+  .scroll-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+}
