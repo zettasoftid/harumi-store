@@ -21,7 +21,7 @@ const articles = [
     image: '/images/journal/upf-foods.jpg',
   },
   {
-    title: 'Tips Chat Admin Agar Pesanan Lebih Cepat Diproses',
+    title: 'Tips Checkout WhatsApp Agar Pesanan Lebih Cepat Diproses',
     excerpt: 'Sertakan nama produk, ukuran, dan alamat awal agar admin bisa mengecek stok dan ongkir dengan cepat.',
     image: '/images/journal/seed-oils.jpg',
   },
@@ -47,7 +47,7 @@ export default function JournalSection() {
   return (
     <section ref={sectionRef} className="py-20 lg:py-28 bg-cream section-padding">
       <div className="max-w-7xl mx-auto">
-        <h2 className="journal-header font-display italic text-soil text-4xl lg:text-5xl mb-12" style={{ letterSpacing: '0' }}>
+        <h2 className="journal-header mb-12 font-display text-4xl font-extrabold uppercase tracking-wide text-soil lg:text-5xl" style={{ letterSpacing: '0' }}>
           Catatan <em>Harumi</em>
         </h2>
 

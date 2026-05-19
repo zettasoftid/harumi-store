@@ -6,14 +6,16 @@ import { AdminLayout } from '@/components/admin/AdminLayout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { createSale, deleteSale, getAdminProducts, getSalesReport, updateSale } from '@/lib/supabase'
+import { createSale, deleteSale, getAdminProducts, getCustomers, getSalesReport, updateSale } from '@/lib/supabase'
+import { quietlySyncCurrentDataToGoogleSheets } from '@/lib/google-sheets'
 import { useAdminAccess } from '@/hooks/use-admin-access'
-import type { SalesReportRow } from '@/lib/supabase'
+import type { AdminCustomerProfile, SalesReportRow } from '@/lib/supabase'
 
 type ProductOption = {
   id: string
   name: string
   product_variants: Array<{
+    color: string | null
     id: string
     selling_price: number
     size: string
@@ -35,8 +37,11 @@ function rupiah(value: number) {
 
 export default function AdminSales() {
   const { isAllowed, isLoading, testBypass } = useAdminAccess()
+  const [customerAddress, setCustomerAddress] = useState('')
+  const [customerId, setCustomerId] = useState('')
   const [customerName, setCustomerName] = useState('')
   const [customerPhone, setCustomerPhone] = useState('')
+  const [customers, setCustomers] = useState<AdminCustomerProfile[]>([])
   const [editingSaleId, setEditingSaleId] = useState<string | null>(null)
   const [note, setNote] = useState('')
   const [otherCost, setOtherCost] = useState('0')
@@ -56,6 +61,19 @@ export default function AdminSales() {
     setSales(report.sales)
   }
 
+  async function refreshProducts() {
+    const data = await getAdminProducts()
+    const rows = (data ?? []) as ProductOption[]
+    setProducts(rows)
+    setProductId((current) => current || rows[0]?.id || '')
+    setVariantId((current) => current || rows[0]?.product_variants?.[0]?.id || '')
+  }
+
+  async function refreshCustomers() {
+    const data = await getCustomers()
+    setCustomers(data)
+  }
+
   useEffect(() => {
     if (!isAllowed) return
 
@@ -71,9 +89,15 @@ export default function AdminSales() {
     getSalesReport()
       .then((report) => setSales(report.sales))
       .catch(() => setSales([]))
+
+    getCustomers()
+      .then(setCustomers)
+      .catch(() => setCustomers([]))
   }, [isAllowed])
 
   function resetForm() {
+    setCustomerAddress('')
+    setCustomerId('')
     setCustomerName('')
     setCustomerPhone('')
     setEditingSaleId(null)
@@ -82,6 +106,17 @@ export default function AdminSales() {
     setQty('1')
     setSaleDate(today())
     setSubmitError('')
+  }
+
+  function handleCustomerSelect(nextCustomerId: string) {
+    setCustomerId(nextCustomerId)
+
+    const selectedCustomer = customers.find((customer) => customer.id === nextCustomerId)
+    if (!selectedCustomer) return
+
+    setCustomerAddress(selectedCustomer.address)
+    setCustomerName(selectedCustomer.name)
+    setCustomerPhone(selectedCustomer.phone)
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -94,6 +129,8 @@ export default function AdminSales() {
     }
 
     const payload = {
+      customer_address_snapshot: customerAddress.trim() || null,
+      customer_id: customerId || null,
       customer_name: customerName.trim() || null,
       customer_phone: customerPhone.trim() || null,
       items: [{ product_id: productId, qty: Number(qty), variant_id: variantId }],
@@ -110,6 +147,9 @@ export default function AdminSales() {
       }
       resetForm()
       await refreshSales()
+      await refreshProducts()
+      await refreshCustomers()
+      void quietlySyncCurrentDataToGoogleSheets().catch(() => undefined)
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : 'Gagal menyimpan penjualan.')
     }
@@ -119,6 +159,8 @@ export default function AdminSales() {
     const firstItem = sale.sale_items?.[0]
     if (!firstItem) return
 
+    setCustomerAddress(sale.customer_address_snapshot ?? sale.customer_profiles?.address ?? '')
+    setCustomerId(sale.customer_id ?? '')
     setCustomerName(sale.customer_name ?? '')
     setCustomerPhone(sale.customer_phone ?? '')
     setEditingSaleId(sale.id)
@@ -136,6 +178,8 @@ export default function AdminSales() {
     try {
       await deleteSale(sale.id)
       await refreshSales()
+      await refreshProducts()
+      void quietlySyncCurrentDataToGoogleSheets().catch(() => undefined)
     } catch (error) {
       window.alert(error instanceof Error ? error.message : 'Gagal menghapus penjualan.')
     }
@@ -158,6 +202,21 @@ export default function AdminSales() {
             <Label>Tanggal</Label>
             <Input type="date" value={saleDate} onChange={(event) => setSaleDate(event.target.value)} className="h-11 rounded-lg border-rose/15" />
           </div>
+          <div className="space-y-2">
+            <Label>Customer terdaftar</Label>
+            <select
+              value={customerId}
+              onChange={(event) => handleCustomerSelect(event.target.value)}
+              className="h-11 w-full rounded-lg border border-rose/15 bg-white px-3 font-body text-sm outline-none focus:border-rose"
+            >
+              <option value="">Auto-match dari no HP / pembeli baru</option>
+              {customers.map((customer) => (
+                <option key={customer.id} value={customer.id}>
+                  {customer.name} - {customer.phone}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
             <div className="space-y-2">
               <Label>Nama pembeli</Label>
@@ -167,6 +226,10 @@ export default function AdminSales() {
               <Label>No HP pembeli</Label>
               <Input value={customerPhone} onChange={(event) => setCustomerPhone(event.target.value)} className="h-11 rounded-lg border-rose/15" />
             </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Alamat snapshot</Label>
+            <textarea value={customerAddress} onChange={(event) => setCustomerAddress(event.target.value)} className="min-h-20 w-full rounded-lg border border-rose/15 bg-white px-3 py-3 font-body text-sm outline-none focus:border-rose" placeholder="Alamat dari akun customer atau catatan pengiriman" />
           </div>
           <div className="space-y-2">
             <Label>Produk</Label>
@@ -189,7 +252,7 @@ export default function AdminSales() {
               <Label>Size</Label>
               <select value={variantId} onChange={(event) => setVariantId(event.target.value)} className="h-11 w-full rounded-lg border border-rose/15 bg-white px-3 font-body text-sm outline-none focus:border-rose">
                 <option value="">-</option>
-                {variants.map((variant) => <option key={variant.id} value={variant.id}>{variant.size}</option>)}
+                {variants.map((variant) => <option key={variant.id} value={variant.id}>{variant.size}{variant.color ? ` / ${variant.color}` : ''}</option>)}
               </select>
             </div>
             <div className="space-y-2">
@@ -222,10 +285,11 @@ export default function AdminSales() {
             <h3 className="font-body text-sm font-extrabold uppercase tracking-widest">Data Penjualan</h3>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[760px] text-left">
+            <table className="w-full min-w-[860px] text-left">
               <thead className="bg-cream/60 font-body text-xs uppercase tracking-widest text-moss">
                 <tr>
                   <th className="px-4 py-3">Tanggal</th>
+                  <th className="px-4 py-3">Pembeli</th>
                   <th className="px-4 py-3">Produk</th>
                   <th className="px-4 py-3">Qty</th>
                   <th className="px-4 py-3">Gross</th>
@@ -242,6 +306,10 @@ export default function AdminSales() {
                   return (
                     <tr key={sale.id} className="border-t border-rose/10 font-body text-sm">
                       <td className="px-4 py-4">{sale.sale_date}</td>
+                      <td className="px-4 py-4">
+                        <p className="font-bold">{sale.customer_name ?? sale.customer_profiles?.name ?? '-'}</p>
+                        <p className="text-xs text-moss">{sale.customer_phone ?? sale.customer_profiles?.phone ?? '-'}</p>
+                      </td>
                       <td className="px-4 py-4 font-bold">{item?.products?.name ?? '-'}</td>
                       <td className="px-4 py-4">{item?.qty ?? 0}</td>
                       <td className="px-4 py-4">{rupiah(gross)}</td>

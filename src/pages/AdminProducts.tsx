@@ -5,6 +5,7 @@ import { AdminLayout } from '@/components/admin/AdminLayout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { archiveProduct, deleteProduct, getAdminProducts, setProductActive } from '@/lib/supabase'
+import { quietlySyncCurrentDataToGoogleSheets } from '@/lib/google-sheets'
 import { useAdminAccess } from '@/hooks/use-admin-access'
 
 type ProductImage = {
@@ -121,6 +122,7 @@ export default function AdminProducts() {
         await setProductActive(product.id, true)
       }
       await refreshProducts()
+      void quietlySyncCurrentDataToGoogleSheets().catch(() => undefined)
     } catch (error) {
       window.alert(error instanceof Error ? error.message : 'Gagal mengubah status produk.')
     }
@@ -133,6 +135,7 @@ export default function AdminProducts() {
     try {
       await deleteProduct(product.id)
       await refreshProducts()
+      void quietlySyncCurrentDataToGoogleSheets().catch(() => undefined)
     } catch (error) {
       window.alert(error instanceof Error ? error.message : 'Gagal menghapus produk.')
     }

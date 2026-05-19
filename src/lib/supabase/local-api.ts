@@ -17,7 +17,8 @@ export async function localApi<T>(path: string, init?: RequestInit) {
   })
 
   if (!response.ok) {
-    throw new Error(`Local API gagal (${response.status})`)
+    const payload = await response.json().catch(() => null) as { error?: string } | null
+    throw new Error(payload?.error ?? `Local API gagal (${response.status})`)
   }
 
   return response.json() as Promise<T>

@@ -6,14 +6,20 @@ import AdminProducts from './pages/AdminProducts'
 import AdminReports from './pages/AdminReports'
 import AdminSales from './pages/AdminSales'
 import AdminSettings from './pages/AdminSettings'
+import CatalogPage from './pages/CatalogPage'
 import Home from './pages/Home'
+import ProductDetailPage from './pages/ProductDetailPage'
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/products" element={<CatalogPage />} />
+      <Route path="/products/:slug" element={<ProductDetailPage />} />
+      <Route path="/catalog" element={<CatalogPage />} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/products" element={<AdminProducts />} />
       <Route path="/admin/products/new" element={<AdminProductForm />} />
       <Route path="/admin/products/:id/edit" element={<AdminProductForm />} />

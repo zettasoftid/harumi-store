@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { ArrowRight, Mail, Instagram, Linkedin } from 'lucide-react';
 
 const discoverLinks = ['Katalog Daster', 'Sepatu Thrifting', 'Produk Terbaru'];
-const supportLinks = ['Cara Pesan', 'Chat Admin', 'FAQ'];
-const exploreLinks = ['Tentang Harumi', 'Catatan Harumi', 'Laporan Admin'];
+const supportLinks = ['Cara Pesan', 'Checkout', 'FAQ'];
+const exploreLinks = ['Tentang Harumi', 'Katalog Harumi', 'Laporan Admin'];
 const legalLinks = ['Syarat & Ketentuan', 'Kebijakan Privasi'];
 
 function WhatsAppIcon() {
@@ -27,7 +27,7 @@ export default function Footer() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
             {/* Newsletter */}
             <div className="lg:col-span-5">
-              <h3 className="font-display italic text-cream text-3xl lg:text-4xl">
+              <h3 className="font-display text-3xl font-extrabold uppercase tracking-wide text-cream lg:text-4xl">
                 Tetap Dekat <em>Dengan Harumi</em>
               </h3>
               <div className="mt-6 flex">

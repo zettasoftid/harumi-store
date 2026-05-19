@@ -31,14 +31,14 @@ export default function HappyHouse() {
             <div className="absolute inset-0 bg-gradient-to-r from-soil/50 via-soil/20 to-transparent" />
           </div>
           <div className="absolute inset-0 flex flex-col justify-center section-padding">
-            <h2 className="font-display italic text-white text-3xl lg:text-5xl" style={{ letterSpacing: '0', textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
+            <h2 className="font-display text-3xl font-extrabold uppercase tracking-wide text-white lg:text-5xl" style={{ letterSpacing: '0', textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
               Pesan <em>Via WhatsApp</em>
             </h2>
             <p className="font-body text-white/90 text-sm mt-3 max-w-md leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}>
-              Pilih produk, cek ukuran, lalu chat admin dengan pesan otomatis.
+              Pilih produk, cek ukuran, lalu checkout dengan pesan WhatsApp otomatis.
             </p>
             <a href="#" className="inline-flex items-center self-start mt-5 px-6 py-2.5 rounded-full bg-clay text-white font-body font-bold text-[11px] uppercase tracking-widest hover:opacity-90 transition-opacity">
-              Chat sekarang
+              Checkout
               <ArrowRight size={14} className="ml-2" />
             </a>
           </div>

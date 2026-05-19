@@ -46,7 +46,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        display: ['"Playfair Display"', 'serif'],
+        display: ['"Montserrat"', 'sans-serif'],
         body: ['"Manrope"', 'sans-serif'],
         caudex: ['"Caudex"', 'serif'],
       },

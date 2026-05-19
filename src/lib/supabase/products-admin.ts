@@ -221,6 +221,13 @@ async function replaceProductChildren(
 }
 
 export async function updateVariantStock(variantId: string, stock: number) {
+  if (isLocalBackendEnabled()) {
+    return localApi<ProductVariantRow>(`/product-variants/${variantId}`, {
+      body: JSON.stringify({ stock }),
+      method: 'PATCH',
+    })
+  }
+
   const { data, error } = await supabase
     .from('product_variants')
     .update({ stock })

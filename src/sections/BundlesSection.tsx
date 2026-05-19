@@ -6,8 +6,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 const bundles = [
   { title: 'Daster Harian', desc: 'Pilihan daster adem untuk dipakai kerja rumah atau santai', image: '/images/bundles/personally-selected.jpg', cta: 'Lihat Daster' },
-  { title: 'Sepatu Thrifting', desc: 'Sepatu pilihan dengan kondisi yang dijelaskan sebelum chat', image: '/images/bundles/snack-hacks.jpg', cta: 'Lihat Sepatu' },
-  { title: 'Pilihan Teman', desc: 'Barang yang cocok dibagikan dari teman ke teman', image: '/images/bundles/little-ones.jpg', cta: 'Chat Admin' },
+  { title: 'Sepatu Thrifting', desc: 'Sepatu pilihan dengan kondisi yang dijelaskan sebelum checkout', image: '/images/bundles/snack-hacks.jpg', cta: 'Lihat Sepatu' },
+  { title: 'Pilihan Teman', desc: 'Barang yang cocok dibagikan dari teman ke teman', image: '/images/bundles/little-ones.jpg', cta: 'Checkout' },
 ];
 
 export default function BundlesSection() {
@@ -31,11 +31,11 @@ export default function BundlesSection() {
     <section ref={sectionRef} className="py-20 lg:py-28 bg-cream section-padding">
       <div className="max-w-7xl mx-auto">
         <div className="bundles-header mb-12">
-          <h2 className="font-display italic text-soil text-4xl lg:text-5xl" style={{ letterSpacing: '0' }}>
+          <h2 className="font-display text-4xl font-extrabold uppercase tracking-wide text-soil lg:text-5xl" style={{ letterSpacing: '0' }}>
             Kategori <em className="italic">Harumi</em>
           </h2>
           <p className="font-body text-moss mt-3 text-sm">
-            Katalog sederhana untuk cepat lihat barang dan langsung tanya stok
+            Katalog sederhana untuk cepat lihat barang dan langsung checkout
           </p>
         </div>
 

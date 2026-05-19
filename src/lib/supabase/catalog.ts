@@ -92,6 +92,15 @@ export async function getCategories() {
 }
 
 export async function getActiveProducts(filters: CatalogFilters = {}) {
+  if (isLocalBackendEnabled()) {
+    const data = await localApi<ProductWithRelations[]>('/products')
+
+    return data
+      .filter((product) => product.is_active)
+      .map(mapProduct)
+      .filter((product) => matchesFilters(product, filters))
+  }
+
   const { data, error } = await supabase
     .from('products')
     .select(`
@@ -111,6 +120,13 @@ export async function getActiveProducts(filters: CatalogFilters = {}) {
 }
 
 export async function getProductBySlug(slug: string) {
+  if (isLocalBackendEnabled()) {
+    const data = await localApi<ProductWithRelations[]>('/products')
+    const product = data.find((row) => row.slug === slug && row.is_active)
+
+    return product ? mapProduct(product) : null
+  }
+
   const { data, error } = await supabase
     .from('products')
     .select(`
@@ -128,9 +144,21 @@ export async function getProductBySlug(slug: string) {
 }
 
 export async function recordWhatsAppClick(input: Omit<Inserts<'wa_click_events'>, 'referrer'> & { referrer?: string | null }) {
-  const { error } = await supabase.from('wa_click_events').insert({
+  const payload = {
     ...input,
     referrer: input.referrer ?? (typeof document === 'undefined' ? null : document.referrer),
+  }
+
+  if (isLocalBackendEnabled()) {
+    await localApi<unknown>('/wa-click-events', {
+      body: JSON.stringify(payload),
+      method: 'POST',
+    })
+    return
+  }
+
+  const { error } = await supabase.from('wa_click_events').insert({
+    ...payload,
   })
 
   if (error) throw error
@@ -146,24 +174,38 @@ export function formatRupiah(amount: number) {
 
 export function buildWhatsAppProductUrl(params: {
   adminWhatsapp: string
+  address?: string
+  customerName?: string
+  customerPhone?: string
   product: CatalogProduct
   productUrl?: string
+  quantity?: number
   variant?: CatalogVariant | null
 }) {
   const phone = params.adminWhatsapp.replace(/[^\d]/g, '')
   const variant = params.variant ?? params.product.variants[0] ?? null
   const price = variant?.selling_price ?? params.product.min_price
+  const quantity = Math.max(params.quantity ?? 1, 1)
+  const orderStatus = (variant?.stock ?? params.product.total_stock) > 0 ? 'Ready stock' : 'PO'
   const productUrl = params.productUrl ?? (typeof window === 'undefined' ? '' : window.location.href)
   const message = [
-    'Halo Admin Harumi Store, saya tertarik dengan produk ini:',
+    'Halo Admin Harumi Store, saya mau checkout:',
     '',
     `Produk: ${params.product.name}`,
     `Kategori: ${params.product.category?.name ?? '-'}`,
     `Size: ${variant?.size ?? '-'}`,
+    `Warna: ${variant?.color ?? '-'}`,
+    `Qty: ${quantity}`,
+    `Status: ${orderStatus}`,
     `Harga: ${formatRupiah(price)}`,
-    `Link: ${productUrl}`,
+    `Subtotal: ${formatRupiah(price * quantity)}`,
+    `SKU: ${variant?.sku ?? '-'}`,
     '',
-    'Apakah produk ini masih tersedia?',
+    `Nama: ${params.customerName || '-'}`,
+    `No. HP: ${params.customerPhone || '-'}`,
+    `Alamat/Catatan: ${params.address || '-'}`,
+    '',
+    `Link: ${productUrl}`,
   ].join('\n')
 
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`

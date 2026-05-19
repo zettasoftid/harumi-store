@@ -10,6 +10,7 @@ import {
   getCurrentSession,
   hasAdminTestBypass,
   isAdminTestBypassPhone,
+  isCurrentUserAdmin,
   normalizeIndonesianPhone,
   sendAdminPhoneOtp,
   verifyAdminPhoneOtp,
@@ -38,8 +39,8 @@ export default function AdminLogin() {
     }
 
     getCurrentSession()
-      .then((session) => {
-        if (session) navigate('/admin', { replace: true })
+      .then(async (session) => {
+        if (session && (await isCurrentUserAdmin())) navigate('/admin', { replace: true })
       })
       .catch(() => undefined)
   }, [navigate])
@@ -107,7 +108,7 @@ export default function AdminLogin() {
           <div className="absolute inset-0 bg-gradient-to-r from-soil/80 via-soil/55 to-rose/40" />
           <div className="absolute inset-0 flex flex-col justify-end p-14 text-cream">
             <p className="font-body text-xs font-bold uppercase tracking-widest text-clay">Dashboard Admin</p>
-            <h1 className="mt-4 max-w-xl font-display text-5xl italic leading-tight">
+            <h1 className="mt-4 max-w-xl font-display text-5xl font-black uppercase leading-none tracking-wide">
               Harumi Store
             </h1>
             <p className="mt-4 max-w-md font-body text-sm leading-relaxed text-cream/80">
@@ -128,7 +129,7 @@ export default function AdminLogin() {
                 <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-clay/30 text-rose">
                   <LockKeyhole size={22} />
                 </div>
-                <h2 className="font-display text-3xl italic text-soil">Login Admin</h2>
+                <h2 className="font-display text-3xl font-extrabold uppercase tracking-wide text-soil">Login Admin</h2>
                 <p className="mt-2 font-body text-sm leading-relaxed text-moss">
                   Masuk memakai nomor HP admin. Kode OTP akan dikirim melalui konfigurasi Phone Auth Supabase.
                 </p>

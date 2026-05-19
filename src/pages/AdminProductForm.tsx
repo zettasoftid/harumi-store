@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createProduct, getAdminProductById, getCategories, getProductImageUrl, slugify, updateProduct, uploadProductImage } from '@/lib/supabase'
+import { quietlySyncCurrentDataToGoogleSheets } from '@/lib/google-sheets'
 import { useAdminAccess } from '@/hooks/use-admin-access'
 
 type CategoryOption = {
@@ -187,9 +188,11 @@ export default function AdminProductForm() {
           replaceImages: true,
           replaceVariants: true,
         })
+        void quietlySyncCurrentDataToGoogleSheets().catch(() => undefined)
         setMessage('Produk berhasil diperbarui.')
       } else {
         await createProduct(payload)
+        void quietlySyncCurrentDataToGoogleSheets().catch(() => undefined)
         setMessage('Produk berhasil ditambahkan.')
         navigate('/admin/products')
       }

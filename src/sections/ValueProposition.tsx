@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const features = [
   { icon: PackageCheck, title: 'Stok Jelas', desc: 'Ukuran, harga, dan status barang mudah dicek' },
-  { icon: MessageCircle, title: 'Pesan via WhatsApp', desc: 'Klik produk lalu lanjut chat admin tanpa checkout rumit' },
+  { icon: MessageCircle, title: 'Checkout via WhatsApp', desc: 'Klik produk, pilih varian, lalu kirim pesanan otomatis' },
   { icon: Heart, title: 'Dipilih Personal', desc: 'Katalog dirapikan untuk pembeli teman ke teman' },
   { icon: Sparkles, title: 'Cantik & Praktis', desc: 'Barang harian yang ramah, sederhana, dan terpercaya' },
 ];
@@ -31,7 +31,7 @@ export default function ValueProposition() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-10 lg:gap-8">
           {/* Heading column */}
           <div className="vp-feature">
-            <h2 className="font-display text-soil text-3xl lg:text-4xl" style={{ letterSpacing: '0' }}>
+            <h2 className="font-display text-3xl font-extrabold uppercase tracking-wide text-soil lg:text-4xl" style={{ letterSpacing: '0' }}>
               Standar <em className="italic">Harumi</em><br />Store
             </h2>
             <p className="font-body text-moss mt-3 text-sm leading-relaxed">

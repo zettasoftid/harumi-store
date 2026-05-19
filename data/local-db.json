@@ -1,0 +1,157 @@
+{
+  "categories": [
+    {
+      "created_at": "2026-05-18T10:44:59.977Z",
+      "id": "local-category-daster",
+      "name": "Daster",
+      "slug": "daster"
+    },
+    {
+      "created_at": "2026-05-18T10:44:59.979Z",
+      "id": "local-category-sepatu",
+      "name": "Sepatu Thrifting",
+      "slug": "sepatu-thrifting"
+    }
+  ],
+  "products": [
+    {
+      "category_id": "local-category-daster",
+      "condition_note": "Baru, bahan adem untuk harian.",
+      "created_at": "2026-05-18T11:45:00.000Z",
+      "description": "Daster rayon motif sakura dengan potongan nyaman untuk aktivitas rumah.",
+      "id": "local-product-daster-sakura-rayon",
+      "is_active": true,
+      "name": "Daster Sakura Rayon",
+      "product_images": [],
+      "product_variants": [
+        {
+          "color": "Soft Pink",
+          "created_at": "2026-05-18T11:45:00.000Z",
+          "hpp": 48000,
+          "id": "local-variant-daster-sakura-m-pink",
+          "is_active": true,
+          "product_id": "local-product-daster-sakura-rayon",
+          "selling_price": 65000,
+          "size": "M",
+          "sku": "HAR-DSR-SKR-M-PNK",
+          "stock": 8,
+          "updated_at": "2026-05-18T11:45:00.000Z"
+        },
+        {
+          "color": "Soft Pink",
+          "created_at": "2026-05-18T11:45:00.000Z",
+          "hpp": 48000,
+          "id": "local-variant-daster-sakura-l-pink",
+          "is_active": true,
+          "product_id": "local-product-daster-sakura-rayon",
+          "selling_price": 65000,
+          "size": "L",
+          "sku": "HAR-DSR-SKR-L-PNK",
+          "stock": 4,
+          "updated_at": "2026-05-18T11:45:00.000Z"
+        }
+      ],
+      "slug": "daster-sakura-rayon",
+      "updated_at": "2026-05-18T11:45:00.000Z"
+    },
+    {
+      "category_id": "local-category-daster",
+      "condition_note": "Baru, motif bunga, stok terbatas.",
+      "created_at": "2026-05-18T11:45:00.000Z",
+      "description": "Daster rumah motif bunga dengan bahan ringan dan warna lembut.",
+      "id": "local-product-daster-rumah-motif-bunga",
+      "is_active": true,
+      "name": "Daster Rumah Motif Bunga",
+      "product_images": [],
+      "product_variants": [
+        {
+          "color": "Cream",
+          "created_at": "2026-05-18T11:45:00.000Z",
+          "hpp": 42000,
+          "id": "local-variant-daster-bunga-m-cream",
+          "is_active": true,
+          "product_id": "local-product-daster-rumah-motif-bunga",
+          "selling_price": 58000,
+          "size": "M",
+          "sku": "HAR-DSR-BNG-M-CRM",
+          "stock": 7,
+          "updated_at": "2026-05-18T11:45:00.000Z"
+        },
+        {
+          "color": "Rose",
+          "created_at": "2026-05-18T11:45:00.000Z",
+          "hpp": 45000,
+          "id": "local-variant-daster-bunga-xl-rose",
+          "is_active": true,
+          "product_id": "local-product-daster-rumah-motif-bunga",
+          "selling_price": 62000,
+          "size": "XL",
+          "sku": "HAR-DSR-BNG-XL-RSE",
+          "stock": 0,
+          "updated_at": "2026-05-18T11:45:00.000Z"
+        }
+      ],
+      "slug": "daster-rumah-motif-bunga",
+      "updated_at": "2026-05-18T11:45:00.000Z"
+    },
+    {
+      "category_id": "local-category-sepatu",
+      "condition_note": "Thrifting kondisi baik, sol aman, detail dicek sebelum checkout.",
+      "created_at": "2026-05-18T11:45:00.000Z",
+      "description": "Sepatu thrifting casual warna cream untuk gaya harian.",
+      "id": "local-product-sepatu-thrifting-casual-cream",
+      "is_active": true,
+      "name": "Sepatu Thrifting Casual Cream",
+      "product_images": [],
+      "product_variants": [
+        {
+          "color": "Cream",
+          "created_at": "2026-05-18T11:45:00.000Z",
+          "hpp": 70000,
+          "id": "local-variant-sepatu-casual-37-cream",
+          "is_active": true,
+          "product_id": "local-product-sepatu-thrifting-casual-cream",
+          "selling_price": 95000,
+          "size": "37",
+          "sku": "HAR-SPT-CSL-37-CRM",
+          "stock": 1,
+          "updated_at": "2026-05-18T11:45:00.000Z"
+        },
+        {
+          "color": "Putih",
+          "created_at": "2026-05-18T11:45:00.000Z",
+          "hpp": 72000,
+          "id": "local-variant-sepatu-casual-39-putih",
+          "is_active": true,
+          "product_id": "local-product-sepatu-thrifting-casual-cream",
+          "selling_price": 98000,
+          "size": "39",
+          "sku": "HAR-SPT-CSL-39-PTH",
+          "stock": 0,
+          "updated_at": "2026-05-18T11:45:00.000Z"
+        }
+      ],
+      "slug": "sepatu-thrifting-casual-cream",
+      "updated_at": "2026-05-18T11:45:00.000Z"
+    }
+  ],
+  "sales": [],
+  "sale_items": [],
+  "settings": {
+    "admin_whatsapp": "6281339691260",
+    "id": "local-settings",
+    "instagram_url": null,
+    "store_name": "Harumi Store",
+    "updated_at": "2026-05-18T10:44:59.979Z"
+  },
+  "wa_click_events": [
+    {
+      "created_at": "2026-05-19T03:56:37.326Z",
+      "id": "44386322-5797-43e6-81dd-e091a69b52fb",
+      "product_id": "local-product-daster-sakura-rayon",
+      "referrer": "",
+      "source": "exclusive_products",
+      "variant_id": "local-variant-daster-sakura-l-pink"
+    }
+  ]
+}

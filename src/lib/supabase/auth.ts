@@ -86,3 +86,12 @@ export async function getCurrentUser() {
   if (error) throw error
   return data.user
 }
+
+export async function isCurrentUserAdmin() {
+  const session = await getCurrentSession()
+  if (!session) return false
+
+  const { data, error } = await supabase.rpc('is_admin')
+  if (error) return false
+  return Boolean(data)
+}

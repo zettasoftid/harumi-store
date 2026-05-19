@@ -48,7 +48,7 @@ export default function NewsletterPopup() {
 
           {/* Right content */}
           <div className="flex-1 p-8 lg:p-12">
-            <h3 className="font-display italic text-soil text-3xl lg:text-4xl leading-tight">
+            <h3 className="font-display text-3xl font-extrabold uppercase leading-tight tracking-wide text-soil lg:text-4xl">
               Dapatkan <em>Update</em> Katalog<br />Harumi Store
             </h3>
             <p className="font-body text-moss text-sm mt-4 leading-relaxed">

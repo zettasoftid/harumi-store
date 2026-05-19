@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
-import { NavLink, useNavigate } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import {
   BarChart3,
   Boxes,
@@ -34,7 +34,15 @@ const navItems = [
   { href: '/admin/settings', icon: Settings, label: 'Pengaturan' },
 ]
 
+function isNavItemActive(href: string, pathname: string) {
+  if (href === '/admin') return pathname === '/admin' || pathname === '/dashboard'
+  if (href === '/admin/products') return pathname === '/admin/products' || /^\/admin\/products\/[^/]+\/edit$/.test(pathname)
+
+  return pathname === href
+}
+
 export function AdminLayout({ action, children, description, testBypass, title }: AdminLayoutProps) {
+  const location = useLocation()
   const navigate = useNavigate()
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -52,30 +60,31 @@ export function AdminLayout({ action, children, description, testBypass, title }
         </div>
         <div>
           <p className="font-body text-[10px] font-extrabold uppercase tracking-widest text-rose">Admin</p>
-          <h1 className="font-display text-2xl italic leading-none text-soil">Harumi Store</h1>
+          <h1 className="font-display text-2xl font-extrabold uppercase leading-none tracking-wide text-soil">Harumi Store</h1>
         </div>
       </div>
 
       <nav className="flex-1 space-y-1 px-3 py-5">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.href}
-            to={item.href}
-            end={item.href === '/admin'}
-            onClick={() => setMobileOpen(false)}
-            className={({ isActive }) =>
-              [
+        {navItems.map((item) => {
+          const isActive = isNavItemActive(item.href, location.pathname)
+
+          return (
+            <Link
+              key={item.href}
+              to={item.href}
+              onClick={() => setMobileOpen(false)}
+              className={[
                 'flex h-11 items-center gap-3 rounded-lg px-3 font-body text-sm font-bold transition-colors',
                 isActive
                   ? 'bg-rose text-cream shadow-sm'
                   : 'text-soil/75 hover:bg-clay/20 hover:text-rose',
-              ].join(' ')
-            }
-          >
-            <item.icon size={18} strokeWidth={1.8} />
-            {item.label}
-          </NavLink>
-        ))}
+              ].join(' ')}
+            >
+              <item.icon size={18} strokeWidth={1.8} />
+              {item.label}
+            </Link>
+          )
+        })}
       </nav>
 
       <div className="border-t border-rose/10 p-4">
@@ -139,7 +148,7 @@ export function AdminLayout({ action, children, description, testBypass, title }
                   <ChevronLeft size={14} />
                   Dashboard Admin
                 </div>
-                <h2 className="font-display text-3xl italic leading-tight text-soil">{title}</h2>
+                <h2 className="font-display text-3xl font-extrabold uppercase leading-tight tracking-wide text-soil">{title}</h2>
                 {description && (
                   <p className="mt-1 max-w-2xl font-body text-sm leading-relaxed text-moss">{description}</p>
                 )}
