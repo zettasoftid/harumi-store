@@ -39,7 +39,7 @@ export default function NewsletterPopup() {
           {/* Left image */}
           <div className="hidden md:block md:w-2/5 relative">
             <img
-              src="/images/hero-wellness-bg.jpg"
+              src="/images/hero-wellness-bg.webp"
               alt="Harumi Store"
               className="absolute inset-0 w-full h-full object-cover"
             />

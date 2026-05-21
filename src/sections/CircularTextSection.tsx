@@ -4,16 +4,19 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const backgroundVideos = ['/baju2.mp4', '/sepatu3.mp4'];
+const backgroundImages = [
+  '/baju2-poster.webp',
+  '/sepatu3-poster.webp',
+];
 
 export default function CircularTextSection() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const linesRef = useRef<HTMLSpanElement[]>([]);
-  const [activeVideo, setActiveVideo] = useState(0);
+  const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setActiveVideo((current) => (current + 1) % backgroundVideos.length);
+      setActiveImage((current) => (current + 1) % backgroundImages.length);
     }, 6500);
 
     return () => window.clearInterval(timer);
@@ -53,15 +56,13 @@ export default function CircularTextSection() {
       style={{ height: '100vh', minHeight: '560px' }}
     >
       <div className="absolute inset-0">
-        <video
-          key={backgroundVideos[activeVideo]}
-          src={backgroundVideos[activeVideo]}
-          aria-label="Video background Harumi Store"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
+        <img
+          key={backgroundImages[activeImage]}
+          src={backgroundImages[activeImage]}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
           className="h-full w-full object-cover brightness-[0.82]"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-soil/65 via-soil/35 to-rose/20" />

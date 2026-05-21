@@ -24,7 +24,7 @@ export default function HappyHouse() {
         <div className="happy-content relative rounded-2xl overflow-hidden">
           <div className="aspect-[16/7] lg:aspect-[16/5]">
             <img
-              src="/images/happy-house.jpg"
+              src="/images/happy-house.webp"
               alt="Harumi Store catalog banner"
               className="w-full h-full object-cover"
             />

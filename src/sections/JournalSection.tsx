@@ -8,22 +8,22 @@ const articles = [
   {
     title: 'Cara Memilih Daster yang Nyaman Dipakai Harian',
     excerpt: 'Pilih bahan yang adem, potongan yang longgar, dan ukuran yang pas agar tetap nyaman untuk aktivitas rumah maupun kerja ringan.',
-    image: '/images/journal/food-labels.jpg',
+    image: '/images/journal/food-labels.webp',
   },
   {
     title: 'Checklist Kondisi Sepatu Thrifting Sebelum Beli',
     excerpt: 'Perhatikan sol, bagian dalam, noda, dan kenyamanan ukuran agar pembelian sepatu thrifting terasa aman.',
-    image: '/images/journal/microplastics.jpg',
+    image: '/images/journal/microplastics.webp',
   },
   {
     title: 'Kenapa Stok Barang Thrifting Cepat Berubah',
     excerpt: 'Produk thrifting biasanya unik dan jumlahnya terbatas, jadi status stok perlu dicek sebelum transaksi selesai.',
-    image: '/images/journal/upf-foods.jpg',
+    image: '/images/journal/upf-foods.webp',
   },
   {
     title: 'Tips Checkout WhatsApp Agar Pesanan Lebih Cepat Diproses',
     excerpt: 'Sertakan nama produk, ukuran, dan alamat awal agar admin bisa mengecek stok dan ongkir dengan cepat.',
-    image: '/images/journal/seed-oils.jpg',
+    image: '/images/journal/seed-oils.webp',
   },
 ];
 

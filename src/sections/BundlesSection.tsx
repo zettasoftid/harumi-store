@@ -5,9 +5,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const bundles = [
-  { title: 'Daster Harian', desc: 'Pilihan daster adem untuk dipakai kerja rumah atau santai', image: '/images/bundles/personally-selected.jpg', cta: 'Lihat Daster' },
-  { title: 'Sepatu Thrifting', desc: 'Sepatu pilihan dengan kondisi yang dijelaskan sebelum checkout', image: '/images/bundles/snack-hacks.jpg', cta: 'Lihat Sepatu' },
-  { title: 'Pilihan Teman', desc: 'Barang yang cocok dibagikan dari teman ke teman', image: '/images/bundles/little-ones.jpg', cta: 'Checkout' },
+  { title: 'Daster Harian', desc: 'Pilihan daster adem untuk dipakai kerja rumah atau santai', image: '/images/bundles/personally-selected.webp', cta: 'Lihat Daster' },
+  { title: 'Sepatu Thrifting', desc: 'Sepatu pilihan dengan kondisi yang dijelaskan sebelum checkout', image: '/images/bundles/snack-hacks.webp', cta: 'Lihat Sepatu' },
+  { title: 'Pilihan Teman', desc: 'Barang yang cocok dibagikan dari teman ke teman', image: '/images/bundles/little-ones.webp', cta: 'Checkout' },
 ];
 
 export default function BundlesSection() {

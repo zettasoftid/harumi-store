@@ -1,18 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
-const heroVideos = ['/baju1.mp4', '/sepatu1.mp4'];
+const heroImages = [
+  { src: '/baju1-poster.webp', label: 'Foto katalog baju Harumi Store' },
+  { src: '/sepatu1-poster.webp', label: 'Foto katalog sepatu Harumi Store' },
+];
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const btnRef = useRef<HTMLDivElement>(null);
-  const [activeVideo, setActiveVideo] = useState(0);
+  const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setActiveVideo((current) => (current + 1) % heroVideos.length);
+      setActiveImage((current) => (current + 1) % heroImages.length);
     }, 6500);
 
     return () => window.clearInterval(timer);
@@ -28,24 +31,16 @@ export default function HeroSection() {
 
   return (
     <section ref={sectionRef} className="relative h-screen min-h-[640px] w-full overflow-hidden">
-      {/* Background videos */}
+      {/* Background image */}
       <div className="absolute inset-0">
-        {heroVideos.map((video, index) => (
-          <video
-            key={video}
-            src={video}
-            aria-label={index === 0 ? 'Video katalog baju Harumi Store' : 'Video katalog sepatu Harumi Store'}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            className={[
-              'absolute inset-0 h-full w-full object-cover brightness-[0.82] transition-opacity duration-1000',
-              activeVideo === index ? 'opacity-100' : 'opacity-0',
-            ].join(' ')}
-          />
-        ))}
+        <img
+          key={heroImages[activeImage].src}
+          src={heroImages[activeImage].src}
+          alt={heroImages[activeImage].label}
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover brightness-[0.82] transition-opacity duration-1000"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-soil/55 via-soil/25 to-rose/15" />
       </div>
 
@@ -76,16 +71,16 @@ export default function HeroSection() {
 
       {/* Carousel dots */}
       <div className="absolute bottom-6 right-8 z-10 flex gap-2">
-        {heroVideos.map((video, index) => (
+        {heroImages.map((image, index) => (
           <button
-            key={video}
+            key={image.src}
             type="button"
-            aria-label={`Tampilkan video ${index + 1}`}
+            aria-label={`Tampilkan gambar ${index + 1}`}
             className={[
               'h-2 rounded-full transition-all',
-              activeVideo === index ? 'w-7 bg-white' : 'w-2 bg-white/45',
+              activeImage === index ? 'w-7 bg-white' : 'w-2 bg-white/45',
             ].join(' ')}
-            onClick={() => setActiveVideo(index)}
+            onClick={() => setActiveImage(index)}
           />
         ))}
       </div>

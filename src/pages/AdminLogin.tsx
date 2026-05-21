@@ -101,7 +101,7 @@ export default function AdminLogin() {
       <div className="grid min-h-screen lg:grid-cols-[1fr_520px]">
         <section className="relative hidden overflow-hidden bg-soil lg:block">
           <img
-            src="/images/hero-wellness-bg.jpg"
+            src="/images/hero-wellness-bg.webp"
             alt="Harumi Store admin"
             className="h-full w-full object-cover opacity-70"
           />

@@ -10,10 +10,10 @@ import { getActiveProducts, type CatalogProduct } from '@/lib/supabase/catalog';
 gsap.registerPlugin(ScrollTrigger);
 
 const fallbackImages = [
-  '/images/products/nutbutter-chocolate.png',
-  '/images/products/chips-seasalt.png',
-  '/images/products/pasta-lentil.png',
-  '/images/products/tahini-raw.png',
+  '/images/products/nutbutter-chocolate.webp',
+  '/images/products/chips-seasalt.webp',
+  '/images/products/pasta-lentil.webp',
+  '/images/products/tahini-raw.webp',
 ];
 
 export default function ExclusivesSection() {
@@ -113,7 +113,13 @@ export default function ExclusivesSection() {
                         <Heart size={14} strokeWidth={1.5} />
                       </button>
                       <Link to={`/products/${catalogProduct.slug}`} className="flex h-full w-full items-center justify-center" aria-label={`Lihat detail ${product.name}`}>
-                        <img src={product.image} alt={product.name} className="max-h-48 w-auto object-contain transition-transform duration-300 hover:scale-105" />
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          loading="lazy"
+                          decoding="async"
+                          className="max-h-48 w-auto object-contain transition-transform duration-300 hover:scale-105"
+                        />
                       </Link>
                     </div>
                     {/* Info */}

@@ -430,7 +430,7 @@ export default function AdminProductForm() {
                     </div>
                     <div className="aspect-[4/3] overflow-hidden rounded-md bg-cream">
                       <img
-                        src={image.preview_url ?? getProductImageUrl(image.image_path) ?? '/images/products/peppermint-mints.png'}
+                        src={image.preview_url ?? getProductImageUrl(image.image_path) ?? '/images/products/peppermint-mints.webp'}
                         alt={image.alt_text ?? name}
                         className="h-full w-full object-cover"
                         onError={(event) => {
@@ -439,7 +439,7 @@ export default function AdminProductForm() {
                             event.currentTarget.src = fallback
                             return
                           }
-                          event.currentTarget.src = '/images/products/peppermint-mints.png'
+                          event.currentTarget.src = '/images/products/peppermint-mints.webp'
                         }}
                       />
                     </div>

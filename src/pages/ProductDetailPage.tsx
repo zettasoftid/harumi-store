@@ -13,7 +13,7 @@ import { getProductBySlug, type CatalogProduct } from '@/lib/supabase/catalog'
 import { cn } from '@/lib/utils'
 import Header from '@/sections/Header'
 
-const fallbackImage = '/images/products/chocolate-cashew.png'
+const fallbackImage = '/images/products/chocolate-cashew.webp'
 
 function variantLabel(size: string, color: string | null) {
   return [size, color].filter(Boolean).join(' / ')
@@ -116,6 +116,8 @@ export default function ProductDetailPage() {
                 <img
                   src={activeImage || checkoutProduct.image}
                   alt={product.name}
+                  decoding="async"
+                  fetchPriority="high"
                   className="max-h-[30rem] w-auto object-contain"
                 />
               </div>
@@ -132,7 +134,13 @@ export default function ProductDetailPage() {
                     onClick={() => setActiveImage(image)}
                     aria-label={`Lihat foto produk ${index + 1}`}
                   >
-                    <img src={image} alt={`${product.name} ${index + 1}`} className="max-h-full w-auto object-contain" />
+                    <img
+                      src={image}
+                      alt={`${product.name} ${index + 1}`}
+                      loading="lazy"
+                      decoding="async"
+                      className="max-h-full w-auto object-contain"
+                    />
                   </button>
                 ))}
               </div>

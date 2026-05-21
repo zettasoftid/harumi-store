@@ -13,12 +13,12 @@ type CategoryOption = {
 }
 
 const fallbackImages = [
-  '/images/products/chocolate-cashew.png',
-  '/images/products/tongue-scraper.png',
-  '/images/products/olive-oil.png',
-  '/images/products/peppermint-mints.png',
-  '/images/products/nutbutter-chocolate.png',
-  '/images/products/chips-seasalt.png',
+  '/images/products/chocolate-cashew.webp',
+  '/images/products/tongue-scraper.webp',
+  '/images/products/olive-oil.webp',
+  '/images/products/peppermint-mints.webp',
+  '/images/products/nutbutter-chocolate.webp',
+  '/images/products/chips-seasalt.webp',
 ]
 
 export default function CatalogPage() {
@@ -91,7 +91,13 @@ export default function CatalogPage() {
             <Heart size={14} strokeWidth={1.5} />
           </button>
           <Link to={`/products/${catalogProduct.slug}`} className="flex h-full w-full items-center justify-center" aria-label={`Lihat detail ${product.name}`}>
-            <img src={product.image} alt={product.name} className={mobile ? 'max-h-72 w-auto object-contain transition-transform duration-300 hover:scale-105' : 'max-h-36 w-auto object-contain transition-transform duration-300 hover:scale-105 lg:max-h-48'} />
+            <img
+              src={product.image}
+              alt={product.name}
+              loading="lazy"
+              decoding="async"
+              className={mobile ? 'max-h-72 w-auto object-contain transition-transform duration-300 hover:scale-105' : 'max-h-36 w-auto object-contain transition-transform duration-300 hover:scale-105 lg:max-h-48'}
+            />
           </Link>
         </div>
         <div className={mobile ? 'p-5' : 'p-4 lg:p-5'}>

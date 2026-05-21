@@ -10,10 +10,10 @@ import { getActiveProducts, type CatalogProduct } from '@/lib/supabase/catalog';
 gsap.registerPlugin(ScrollTrigger);
 
 const fallbackImages = [
-  '/images/products/chocolate-cashew.png',
-  '/images/products/tongue-scraper.png',
-  '/images/products/olive-oil.png',
-  '/images/products/peppermint-mints.png',
+  '/images/products/chocolate-cashew.webp',
+  '/images/products/tongue-scraper.webp',
+  '/images/products/olive-oil.webp',
+  '/images/products/peppermint-mints.webp',
 ];
 
 export default function FeaturedProducts() {
@@ -82,7 +82,13 @@ export default function FeaturedProducts() {
                     <Heart size={13} strokeWidth={1.5} />
                   </button>
                   <Link to={`/products/${catalogProduct.slug}`} className="flex h-full w-full items-center justify-center" aria-label={`Lihat detail ${product.name}`}>
-                    <img src={product.image} alt={product.name} className="max-h-36 lg:max-h-44 w-auto object-contain transition-transform duration-300 hover:scale-105" />
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="max-h-36 lg:max-h-44 w-auto object-contain transition-transform duration-300 hover:scale-105"
+                    />
                   </Link>
                 </div>
                 <div className="p-4">
