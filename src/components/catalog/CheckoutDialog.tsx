@@ -436,7 +436,7 @@ export function CheckoutDialog({ buttonClassName, buttonLabel = 'Checkout', prod
                           setAuthError('')
                         }}
                       >
-                        {mode === 'login' ? 'Masuk' : 'Daftar'}
+                        {mode === 'login' ? 'Login' : 'Daftar'}
                       </button>
                     ))}
                   </div>
@@ -468,7 +468,7 @@ export function CheckoutDialog({ buttonClassName, buttonLabel = 'Checkout', prod
 
                   <Button type="submit" className="mt-4 h-11 w-full rounded-full bg-soil font-body text-xs font-bold uppercase tracking-widest text-cream hover:bg-soil/90" disabled={isAuthLoading}>
                     {isAuthLoading ? <Loader2 className="animate-spin" /> : <UserRound size={16} />}
-                    {authMode === 'login' ? 'Masuk Akun' : 'Buat Akun'}
+                    {authMode === 'login' ? 'Login' : 'Buat Akun'}
                   </Button>
                 </form>
               )}

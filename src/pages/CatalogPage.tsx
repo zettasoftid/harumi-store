@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router'
-import { ArrowLeft, Heart, Search, SlidersHorizontal } from 'lucide-react'
+import { ArrowLeft, ChevronLeft, ChevronRight, Heart, Search, SlidersHorizontal } from 'lucide-react'
 import { CheckoutDialog } from '@/components/catalog/CheckoutDialog'
 import { catalogProductToCheckoutProduct, getProductPriceLabel, getProductTotalStock } from '@/lib/checkout'
 import { getActiveProducts, getCategories, type CatalogProduct } from '@/lib/supabase/catalog'
@@ -22,6 +22,7 @@ const fallbackImages = [
 ]
 
 export default function CatalogPage() {
+  const mobileSliderRef = useRef<HTMLDivElement>(null)
   const [categorySlug, setCategorySlug] = useState('all')
   const [categories, setCategories] = useState<CategoryOption[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -62,6 +63,58 @@ export default function CatalogPage() {
       return matchesQuery && matchesCategory && matchesStock
     })
   }, [categorySlug, products, query, stockStatus])
+
+  const scrollMobileProducts = (direction: -1 | 1) => {
+    const slider = mobileSliderRef.current
+    if (!slider) return
+
+    slider.scrollBy({
+      behavior: 'smooth',
+      left: direction * Math.max(slider.clientWidth * 0.86, 260),
+    })
+  }
+
+  const renderProductCard = (catalogProduct: CatalogProduct, index: number, mobile = false) => {
+    const product = catalogProductToCheckoutProduct(catalogProduct, fallbackImages[index % fallbackImages.length])
+    const totalStock = getProductTotalStock(product)
+
+    return (
+      <article key={product.id} className={mobile ? 'product-card min-w-[82vw] snap-center sm:min-w-[360px]' : 'product-card'}>
+        <div className={mobile ? 'relative flex h-[24rem] items-center justify-center bg-[#f0ede8] p-5' : 'relative flex h-52 items-center justify-center bg-[#f0ede8] p-4 lg:h-64 lg:p-6'}>
+          <span className={[
+            'absolute left-3 top-3 rounded-full px-3 py-1 font-body text-[9px] font-bold uppercase tracking-widest',
+            totalStock > 0 ? 'bg-moss/15 text-soil' : 'bg-rose text-cream',
+          ].join(' ')}>
+            {totalStock > 0 ? `${totalStock} stok` : 'PO'}
+          </span>
+          <button className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-full bg-white/85 text-soil transition-all hover:bg-white" aria-label="Simpan produk">
+            <Heart size={14} strokeWidth={1.5} />
+          </button>
+          <Link to={`/products/${catalogProduct.slug}`} className="flex h-full w-full items-center justify-center" aria-label={`Lihat detail ${product.name}`}>
+            <img src={product.image} alt={product.name} className={mobile ? 'max-h-72 w-auto object-contain transition-transform duration-300 hover:scale-105' : 'max-h-36 w-auto object-contain transition-transform duration-300 hover:scale-105 lg:max-h-48'} />
+          </Link>
+        </div>
+        <div className={mobile ? 'p-5' : 'p-4 lg:p-5'}>
+          <p className="font-body text-[9px] font-bold uppercase tracking-widest text-moss">
+            {product.vendor}
+          </p>
+          <h2 className={mobile ? 'mt-2 min-h-12 font-body text-base font-extrabold leading-snug text-soil' : 'mt-2 min-h-10 font-body text-sm font-extrabold leading-snug text-soil'}>
+            <Link to={`/products/${catalogProduct.slug}`} className="hover:text-rose">
+              {product.name}
+            </Link>
+          </h2>
+          <p className="mt-2 font-body text-xs font-bold text-soil">
+            {getProductPriceLabel(product)}
+          </p>
+          <CheckoutDialog
+            product={product}
+            source="catalog_page"
+            buttonClassName="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full border-2 border-rose py-2.5 font-body text-[10px] font-bold uppercase tracking-widest text-rose transition-all duration-300 hover:bg-rose hover:text-cream"
+          />
+        </div>
+      </article>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-cream text-soil">
@@ -144,49 +197,39 @@ export default function CatalogPage() {
           )}
 
           {!isLoading && filteredProducts.length > 0 && (
-            <div className="mt-6 grid grid-cols-2 gap-5 lg:grid-cols-4">
-              {filteredProducts.map((catalogProduct, index) => {
-                const product = catalogProductToCheckoutProduct(catalogProduct, fallbackImages[index % fallbackImages.length])
-                const totalStock = getProductTotalStock(product)
+            <>
+              <div className="mt-5 flex items-center justify-between lg:hidden">
+                <p className="font-body text-[10px] font-extrabold uppercase tracking-widest text-moss">
+                  Geser produk
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    className="flex size-10 items-center justify-center rounded-full border border-rose/20 bg-white text-rose shadow-card transition-colors hover:bg-rose hover:text-cream"
+                    onClick={() => scrollMobileProducts(-1)}
+                    aria-label="Produk sebelumnya"
+                  >
+                    <ChevronLeft size={18} />
+                  </button>
+                  <button
+                    type="button"
+                    className="flex size-10 items-center justify-center rounded-full border border-rose/20 bg-white text-rose shadow-card transition-colors hover:bg-rose hover:text-cream"
+                    onClick={() => scrollMobileProducts(1)}
+                    aria-label="Produk berikutnya"
+                  >
+                    <ChevronRight size={18} />
+                  </button>
+                </div>
+              </div>
 
-                return (
-                  <article key={product.id} className="product-card">
-                    <div className="relative flex h-52 items-center justify-center bg-[#f0ede8] p-4 lg:h-64 lg:p-6">
-                      <span className={[
-                        'absolute left-3 top-3 rounded-full px-3 py-1 font-body text-[9px] font-bold uppercase tracking-widest',
-                        totalStock > 0 ? 'bg-moss/15 text-soil' : 'bg-rose text-cream',
-                      ].join(' ')}>
-                        {totalStock > 0 ? `${totalStock} stok` : 'PO'}
-                      </span>
-                      <button className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-full bg-white/85 text-soil transition-all hover:bg-white" aria-label="Simpan produk">
-                        <Heart size={14} strokeWidth={1.5} />
-                      </button>
-                      <Link to={`/products/${catalogProduct.slug}`} className="flex h-full w-full items-center justify-center" aria-label={`Lihat detail ${product.name}`}>
-                        <img src={product.image} alt={product.name} className="max-h-36 w-auto object-contain transition-transform duration-300 hover:scale-105 lg:max-h-48" />
-                      </Link>
-                    </div>
-                    <div className="p-4 lg:p-5">
-                      <p className="font-body text-[9px] font-bold uppercase tracking-widest text-moss">
-                        {product.vendor}
-                      </p>
-                      <h2 className="mt-2 min-h-10 font-body text-sm font-extrabold leading-snug text-soil">
-                        <Link to={`/products/${catalogProduct.slug}`} className="hover:text-rose">
-                          {product.name}
-                        </Link>
-                      </h2>
-                      <p className="mt-2 font-body text-xs font-bold text-soil">
-                        {getProductPriceLabel(product)}
-                      </p>
-                      <CheckoutDialog
-                        product={product}
-                        source="catalog_page"
-                        buttonClassName="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full border-2 border-rose py-2.5 font-body text-[10px] font-bold uppercase tracking-widest text-rose transition-all duration-300 hover:bg-rose hover:text-cream"
-                      />
-                    </div>
-                  </article>
-                )
-              })}
-            </div>
+              <div ref={mobileSliderRef} className="scroll-hidden -mx-6 mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 lg:hidden">
+                {filteredProducts.map((catalogProduct, index) => renderProductCard(catalogProduct, index, true))}
+              </div>
+
+              <div className="mt-6 hidden grid-cols-2 gap-5 lg:grid lg:grid-cols-4">
+                {filteredProducts.map((catalogProduct, index) => renderProductCard(catalogProduct, index))}
+              </div>
+            </>
           )}
         </section>
       </main>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MessageCircle, Search, User } from 'lucide-react';
+import { Menu, Search, User, X } from 'lucide-react';
 
 type HeaderProps = {
   solidAtTop?: boolean
@@ -7,8 +7,9 @@ type HeaderProps = {
 
 export default function Header({ solidAtTop = false }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const isSolid = solidAtTop || scrolled || searchOpen;
+  const isSolid = solidAtTop || scrolled || searchOpen || mobileMenuOpen;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -82,7 +83,7 @@ export default function Header({ solidAtTop = false }: HeaderProps) {
               <a
                 href="#"
                 className={[
-                  'hidden font-body text-[11px] font-bold uppercase tracking-[0.05em] transition-colors sm:block',
+                  'hidden font-body text-[11px] font-bold uppercase tracking-[0.05em] transition-colors lg:block',
                   isSolid ? 'text-soil hover:text-rose' : 'text-white/90 hover:text-white',
                 ].join(' ')}
               >
@@ -98,17 +99,43 @@ export default function Header({ solidAtTop = false }: HeaderProps) {
                 <User size={18} strokeWidth={1.5} />
               </button>
               <button
+                type="button"
+                onClick={() => setMobileMenuOpen((current) => !current)}
                 className={[
-                  'relative transition-colors',
+                  'transition-colors lg:hidden',
                   isSolid ? 'text-soil hover:text-rose' : 'text-white/90 hover:text-white',
                 ].join(' ')}
-                aria-label="Checkout WhatsApp"
+                aria-label={mobileMenuOpen ? 'Tutup menu' : 'Buka menu'}
               >
-                <MessageCircle size={18} strokeWidth={1.5} />
+                {mobileMenuOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
               </button>
             </div>
           </div>
         </div>
+
+        {mobileMenuOpen && (
+          <div className="border-t border-rose/10 bg-cream px-6 pb-6 pt-3 shadow-sm lg:hidden">
+            <nav className="grid gap-1">
+              {navLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="rounded-lg px-3 py-3 font-body text-xs font-extrabold uppercase tracking-widest text-soil transition-colors hover:bg-clay/20 hover:text-rose"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </a>
+              ))}
+              <a
+                href="/admin/login"
+                className="mt-2 rounded-lg bg-rose px-3 py-3 text-center font-body text-xs font-extrabold uppercase tracking-widest text-cream transition-colors hover:bg-rose/90"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Login Admin
+              </a>
+            </nav>
+          </div>
+        )}
 
         {/* Search overlay */}
         {searchOpen && (
