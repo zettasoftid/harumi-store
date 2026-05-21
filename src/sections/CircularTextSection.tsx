@@ -5,8 +5,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const backgroundImages = [
-  '/baju2-poster.webp',
-  '/sepatu3-poster.webp',
+  { src: '/baju2.mp4', poster: '/baju2-poster.webp' },
+  { src: '/sepatu3.mp4', poster: '/sepatu3-poster.webp' },
 ];
 
 export default function CircularTextSection() {
@@ -56,13 +56,16 @@ export default function CircularTextSection() {
       style={{ height: '100vh', minHeight: '560px' }}
     >
       <div className="absolute inset-0">
-        <img
-          key={backgroundImages[activeImage]}
-          src={backgroundImages[activeImage]}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          decoding="async"
+        <video
+          key={backgroundImages[activeImage].src}
+          src={backgroundImages[activeImage].src}
+          poster={backgroundImages[activeImage].poster}
+          aria-label="Video background Harumi Store"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
           className="h-full w-full object-cover brightness-[0.82]"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-soil/65 via-soil/35 to-rose/20" />

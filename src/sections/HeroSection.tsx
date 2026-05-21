@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
 const heroImages = [
-  { src: '/baju1-poster.webp', label: 'Foto katalog baju Harumi Store' },
-  { src: '/sepatu1-poster.webp', label: 'Foto katalog sepatu Harumi Store' },
+  { src: '/baju1.mp4', poster: '/baju1-poster.webp', label: 'Video katalog baju Harumi Store' },
+  { src: '/sepatu1.mp4', poster: '/sepatu1-poster.webp', label: 'Video katalog sepatu Harumi Store' },
 ];
 
 export default function HeroSection() {
@@ -33,12 +33,16 @@ export default function HeroSection() {
     <section ref={sectionRef} className="relative h-screen min-h-[640px] w-full overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
-        <img
+        <video
           key={heroImages[activeImage].src}
           src={heroImages[activeImage].src}
-          alt={heroImages[activeImage].label}
-          fetchPriority="high"
-          decoding="async"
+          poster={heroImages[activeImage].poster}
+          aria-label={heroImages[activeImage].label}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
           className="absolute inset-0 h-full w-full object-cover brightness-[0.82] transition-opacity duration-1000"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-soil/55 via-soil/25 to-rose/15" />
@@ -75,7 +79,7 @@ export default function HeroSection() {
           <button
             key={image.src}
             type="button"
-            aria-label={`Tampilkan gambar ${index + 1}`}
+            aria-label={`Tampilkan video ${index + 1}`}
             className={[
               'h-2 rounded-full transition-all',
               activeImage === index ? 'w-7 bg-white' : 'w-2 bg-white/45',
