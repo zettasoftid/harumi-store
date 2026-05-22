@@ -72,7 +72,7 @@ start_app() {
   echo "Menjalankan ${APP_NAME} di http://localhost:${PORT}"
 
   trap 'echo; echo "Menghentikan ${APP_NAME}..."; stop_all_ports; exit 130' INT TERM
-  pnpm dev --host "${HOST}" --port "${PORT}" --strictPort
+  pnpm exec vite --host "${HOST}" --port "${PORT}" --strictPort
 }
 
 case "${command}" in

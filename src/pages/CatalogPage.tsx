@@ -26,6 +26,7 @@ export default function CatalogPage() {
   const [categorySlug, setCategorySlug] = useState('all')
   const [categories, setCategories] = useState<CategoryOption[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [loadError, setLoadError] = useState('')
   const [products, setProducts] = useState<CatalogProduct[]>([])
   const [query, setQuery] = useState('')
   const [stockStatus, setStockStatus] = useState('all')
@@ -36,12 +37,14 @@ export default function CatalogPage() {
       getActiveProducts({ includeOutOfStock: true }),
     ])
       .then(([categoryRows, productRows]) => {
+        setLoadError('')
         setCategories(categoryRows)
         setProducts(productRows)
       })
-      .catch(() => {
+      .catch((error) => {
         setCategories([])
         setProducts([])
+        setLoadError(error instanceof Error ? error.message : 'Gagal memuat produk.')
       })
       .finally(() => setIsLoading(false))
   }, [])
@@ -198,7 +201,9 @@ export default function CatalogPage() {
 
           {!isLoading && filteredProducts.length === 0 && (
             <div className="mt-6 rounded-2xl border border-rose/10 bg-white p-10 text-center font-body text-sm text-moss">
-              Produk tidak ditemukan. Coba ubah kata kunci atau filter katalog.
+              {loadError
+                ? `Gagal memuat produk: ${loadError}. Jika memakai mode lokal, jalankan npm run dev agar API lokal ikut aktif.`
+                : 'Produk tidak ditemukan. Coba ubah kata kunci atau filter katalog.'}
             </div>
           )}
 

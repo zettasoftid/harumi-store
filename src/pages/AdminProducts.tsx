@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, Navigate } from 'react-router'
 import { Archive, Edit3, Eye, PackagePlus, Search, SlidersHorizontal, Trash2 } from 'lucide-react'
 import { AdminLayout } from '@/components/admin/AdminLayout'
@@ -34,39 +34,6 @@ type AdminProductRow = {
   slug: string
 }
 
-const sampleProducts: AdminProductRow[] = [
-  {
-    categories: { name: 'Daster', slug: 'daster' },
-    id: 'sample-daster-sakura',
-    is_active: true,
-    name: 'Daster Sakura Rayon',
-    product_images: [],
-    product_variants: [
-      { selling_price: 65000, size: 'L', stock: 4 },
-      { selling_price: 65000, size: 'XL', stock: 2 },
-    ],
-    slug: 'daster-sakura-rayon',
-  },
-  {
-    categories: { name: 'Sepatu Thrifting', slug: 'sepatu-thrifting' },
-    id: 'sample-sepatu-cream',
-    is_active: true,
-    name: 'Sepatu Thrifting Casual Cream',
-    product_images: [],
-    product_variants: [{ selling_price: 95000, size: '38', stock: 1 }],
-    slug: 'sepatu-thrifting-casual-cream',
-  },
-  {
-    categories: { name: 'Daster', slug: 'daster' },
-    id: 'sample-daster-busui',
-    is_active: false,
-    name: 'Daster Busui Soft Pink',
-    product_images: [],
-    product_variants: [{ selling_price: 72000, size: 'M', stock: 0 }],
-    slug: 'daster-busui-soft-pink',
-  },
-]
-
 function rupiah(value: number) {
   return new Intl.NumberFormat('id-ID', {
     currency: 'IDR',
@@ -93,24 +60,25 @@ export default function AdminProducts() {
   const [products, setProducts] = useState<AdminProductRow[]>([])
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('all')
+  const [loadError, setLoadError] = useState('')
   const [status, setStatus] = useState('all')
 
-  async function refreshProducts() {
+  const refreshProducts = useCallback(async () => {
     try {
+      setLoadError('')
       const data = await getAdminProducts()
       setProducts((data ?? []) as AdminProductRow[])
-    } catch {
-      setProducts(sampleProducts)
+    } catch (error) {
+      setProducts([])
+      setLoadError(error instanceof Error ? error.message : 'Gagal memuat produk.')
     }
-  }
+  }, [])
 
   useEffect(() => {
     if (!isAllowed) return
 
-    getAdminProducts()
-      .then((data) => setProducts((data ?? []) as AdminProductRow[]))
-      .catch(() => setProducts(sampleProducts))
-  }, [isAllowed])
+    void refreshProducts()
+  }, [isAllowed, refreshProducts])
 
   async function handleToggleActive(product: AdminProductRow) {
     if (product.id.startsWith('sample-')) return
@@ -244,6 +212,11 @@ export default function AdminProducts() {
         </div>
 
         <div className="overflow-x-auto">
+          {loadError && (
+            <div className="border-b border-rose/10 bg-rose/5 p-4 font-body text-sm leading-relaxed text-rose">
+              Gagal memuat produk: {loadError}. Jika memakai mode lokal, jalankan <span className="font-bold">npm run dev</span> agar API lokal ikut aktif.
+            </div>
+          )}
           <table className="w-full min-w-[760px] text-left">
             <thead>
               <tr className="border-b border-rose/10 bg-cream/60 font-body text-xs uppercase tracking-widest text-moss">
