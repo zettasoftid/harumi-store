@@ -135,6 +135,43 @@
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
+
+  .brand-marquee {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    mask-image: linear-gradient(90deg, transparent, black 9%, black 91%, transparent);
+  }
+
+  .brand-marquee-track {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    padding-inline: clamp(1.25rem, 4vw, 3rem);
+    animation: brand-marquee 24s linear infinite;
+    will-change: transform;
+  }
+
+  .brand-marquee-track-slow {
+    animation-duration: 28s;
+  }
+
+  .brand-marquee:hover .brand-marquee-track {
+    animation-play-state: paused;
+  }
+
+  .brand-logo {
+    display: inline-flex;
+    min-width: 9rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @keyframes brand-marquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+  }
   
   .scroll-hidden::-webkit-scrollbar {
     display: none;
