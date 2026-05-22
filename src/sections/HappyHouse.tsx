@@ -19,7 +19,7 @@ export default function HappyHouse() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-10 lg:py-16 bg-cream section-padding">
+    <section id="cara-pesan" ref={sectionRef} className="py-10 lg:py-16 bg-cream section-padding">
       <div className="max-w-7xl mx-auto">
         <div className="happy-content relative rounded-2xl overflow-hidden">
           <div className="aspect-[16/7] lg:aspect-[16/5]">
@@ -37,7 +37,7 @@ export default function HappyHouse() {
             <p className="font-body text-white/90 text-sm mt-3 max-w-md leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}>
               Pilih produk, cek ukuran, lalu checkout dengan pesan WhatsApp otomatis.
             </p>
-            <a href="#" className="inline-flex items-center self-start mt-5 px-6 py-2.5 rounded-full bg-clay text-white font-body font-bold text-[11px] uppercase tracking-widest hover:opacity-90 transition-opacity">
+            <a href="/products" className="inline-flex items-center self-start mt-5 px-6 py-2.5 rounded-full bg-clay text-white font-body font-bold text-[11px] uppercase tracking-widest hover:opacity-90 transition-opacity">
               Checkout
               <ArrowRight size={14} className="ml-2" />
             </a>

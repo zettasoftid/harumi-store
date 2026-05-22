@@ -77,8 +77,16 @@ export default function AdminProducts() {
   useEffect(() => {
     if (!isAllowed) return
 
-    void refreshProducts()
-  }, [isAllowed, refreshProducts])
+    getAdminProducts()
+      .then((data) => {
+        setLoadError('')
+        setProducts((data ?? []) as AdminProductRow[])
+      })
+      .catch((error) => {
+        setProducts([])
+        setLoadError(error instanceof Error ? error.message : 'Gagal memuat produk.')
+      })
+  }, [isAllowed])
 
   async function handleToggleActive(product: AdminProductRow) {
     if (product.id.startsWith('sample-')) return

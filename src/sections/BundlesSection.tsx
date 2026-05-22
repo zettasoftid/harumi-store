@@ -5,9 +5,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const bundles = [
-  { title: 'Daster Harian', desc: 'Pilihan daster adem untuk dipakai kerja rumah atau santai', image: '/images/bundles/personally-selected.webp', cta: 'Lihat Daster' },
-  { title: 'Sepatu Thrifting', desc: 'Sepatu pilihan dengan kondisi yang dijelaskan sebelum checkout', image: '/images/bundles/snack-hacks.webp', cta: 'Lihat Sepatu' },
-  { title: 'Pilihan Teman', desc: 'Barang yang cocok dibagikan dari teman ke teman', image: '/images/bundles/little-ones.webp', cta: 'Checkout' },
+  { title: 'Daster Harian', desc: 'Pilihan daster adem untuk dipakai kerja rumah atau santai', image: '/images/bundles/personally-selected.webp', cta: 'Lihat Daster', href: '/products?category=daster' },
+  { title: 'Sepatu Thrifting', desc: 'Sepatu pilihan dengan kondisi yang dijelaskan sebelum checkout', image: '/images/bundles/snack-hacks.webp', cta: 'Lihat Sepatu', href: '/products?category=sepatu-thrifting' },
+  { title: 'Pilihan Teman', desc: 'Barang yang cocok dibagikan dari teman ke teman', image: '/images/bundles/little-ones.webp', cta: 'Checkout', href: '/products' },
 ];
 
 export default function BundlesSection() {
@@ -28,7 +28,7 @@ export default function BundlesSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 lg:py-28 bg-cream section-padding">
+    <section id="tentang" ref={sectionRef} className="py-20 lg:py-28 bg-cream section-padding">
       <div className="max-w-7xl mx-auto">
         <div className="bundles-header mb-12">
           <h2 className="font-display text-4xl font-extrabold uppercase tracking-wide text-soil lg:text-5xl" style={{ letterSpacing: '0' }}>
@@ -57,7 +57,7 @@ export default function BundlesSection() {
               <p className="font-body text-moss text-sm mt-1 leading-relaxed">
                 {bundle.desc}
               </p>
-              <a href="#" className="inline-block mt-3 font-body font-bold text-xs uppercase tracking-widest text-soil underline underline-offset-4 hover:text-clay transition-colors">
+              <a href={bundle.href} className="inline-block mt-3 font-body font-bold text-xs uppercase tracking-widest text-soil underline underline-offset-4 hover:text-clay transition-colors">
                 {bundle.cta}
               </a>
             </div>

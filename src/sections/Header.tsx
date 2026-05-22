@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import type { FormEvent } from 'react';
 import { Menu, Search, User, X } from 'lucide-react';
 
 type HeaderProps = {
@@ -9,6 +10,7 @@ export default function Header({ solidAtTop = false }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const isSolid = solidAtTop || scrolled || searchOpen || mobileMenuOpen;
 
   useEffect(() => {
@@ -19,10 +21,16 @@ export default function Header({ solidAtTop = false }: HeaderProps) {
 
   const navLinks = [
     { href: '/products', label: 'Katalog' },
-    { href: '/products', label: 'Daster' },
-    { href: '/products', label: 'Sepatu Thrifting' },
-    { href: '#', label: 'Cara Pesan' },
+    { href: '/products?category=daster', label: 'Daster' },
+    { href: '/products?category=sepatu-thrifting', label: 'Sepatu Thrifting' },
+    { href: '/#cara-pesan', label: 'Cara Pesan' },
   ];
+
+  function handleSearchSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const query = searchQuery.trim();
+    window.location.href = query ? `/products?search=${encodeURIComponent(query)}` : '/products';
+  }
 
   return (
     <header
@@ -81,7 +89,7 @@ export default function Header({ solidAtTop = false }: HeaderProps) {
                 <Search size={18} strokeWidth={1.5} />
               </button>
               <a
-                href="#"
+                href="/#tentang"
                 className={[
                   'hidden font-body text-[11px] font-bold uppercase tracking-[0.05em] transition-colors lg:block',
                   isSolid ? 'text-soil hover:text-rose' : 'text-white/90 hover:text-white',
@@ -89,15 +97,16 @@ export default function Header({ solidAtTop = false }: HeaderProps) {
               >
                 Tentang
               </a>
-              <button
+              <a
+                href="/admin/login"
                 className={[
                   'transition-colors',
                   isSolid ? 'text-soil hover:text-rose' : 'text-white/90 hover:text-white',
                 ].join(' ')}
-                aria-label="Admin"
+                aria-label="Login admin"
               >
                 <User size={18} strokeWidth={1.5} />
-              </button>
+              </a>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen((current) => !current)}
@@ -140,15 +149,19 @@ export default function Header({ solidAtTop = false }: HeaderProps) {
         {/* Search overlay */}
         {searchOpen && (
           <div className="absolute top-full left-0 w-full bg-cream border-t border-soil/10 py-6 section-padding animate-in slide-in-from-top-2 duration-300">
-            <div className="relative max-w-2xl mx-auto">
+            <form className="relative max-w-2xl mx-auto" onSubmit={handleSearchSubmit}>
               <input
                 type="text"
                 placeholder="Cari daster, sepatu, ukuran..."
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
                 className="w-full bg-transparent border-b-2 border-soil/20 py-3 pr-12 font-body text-lg text-soil placeholder:text-moss/50 focus:outline-none focus:border-soil transition-colors"
                 autoFocus
               />
-              <Search className="absolute right-0 top-1/2 -translate-y-1/2 text-moss" size={20} strokeWidth={1.5} />
-            </div>
+              <button type="submit" className="absolute right-0 top-1/2 -translate-y-1/2 text-moss transition-colors hover:text-rose" aria-label="Cari produk">
+                <Search size={20} strokeWidth={1.5} />
+              </button>
+            </form>
           </div>
         )}
       </header>

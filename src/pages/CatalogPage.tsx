@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
 import { ArrowLeft, ChevronLeft, ChevronRight, Heart, Search, SlidersHorizontal } from 'lucide-react'
 import { CheckoutDialog } from '@/components/catalog/CheckoutDialog'
 import { catalogProductToCheckoutProduct, getProductPriceLabel, getProductTotalStock } from '@/lib/checkout'
@@ -22,13 +22,14 @@ const fallbackImages = [
 ]
 
 export default function CatalogPage() {
+  const [searchParams] = useSearchParams()
   const mobileSliderRef = useRef<HTMLDivElement>(null)
-  const [categorySlug, setCategorySlug] = useState('all')
+  const [categorySlug, setCategorySlug] = useState(searchParams.get('category') || 'all')
   const [categories, setCategories] = useState<CategoryOption[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
   const [products, setProducts] = useState<CatalogProduct[]>([])
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState(searchParams.get('search') || '')
   const [stockStatus, setStockStatus] = useState('all')
 
   useEffect(() => {
