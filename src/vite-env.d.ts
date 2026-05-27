@@ -3,6 +3,7 @@
 interface ImportMetaEnv {
   readonly DEV: boolean
   readonly VITE_ENABLE_ADMIN_TEST_BYPASS?: string
+  readonly VITE_GA_MEASUREMENT_ID?: string
   readonly VITE_LOCAL_API_ENDPOINT?: string
   readonly VITE_LOCAL_DELETE_ENDPOINT?: string
   readonly VITE_LOCAL_STORAGE?: string

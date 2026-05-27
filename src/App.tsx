@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router'
+import { useEffect } from 'react'
+import { Route, Routes, useLocation } from 'react-router'
 import AdminDashboard from './pages/AdminDashboard'
 import AdminLogin from './pages/AdminLogin'
 import AdminProductForm from './pages/AdminProductForm'
@@ -9,8 +10,15 @@ import AdminSettings from './pages/AdminSettings'
 import CatalogPage from './pages/CatalogPage'
 import Home from './pages/Home'
 import ProductDetailPage from './pages/ProductDetailPage'
+import { trackPageView } from './lib/analytics'
 
 export default function App() {
+  const location = useLocation()
+
+  useEffect(() => {
+    trackPageView(location.pathname + location.search)
+  }, [location.pathname, location.search])
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
